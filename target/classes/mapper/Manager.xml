@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.map.Managermap">
+    <insert id="addmanager" parameterType="com.great.entity.Manager">
+        insert into manager (mid,mpwd,mname) values (#{mid},#{mpwd},#{mname})
+    </insert>
+    <!--后台登录-->
+    <select id="mlogin" resultType="com.great.entity.Manager">
+        select * from manager where mid=#{mid} and mpwd=#{mpwd}
+    </select>
+
+    <!--查询用户所有-->
+    <select id="queryUser"  parameterType="java.lang.String" resultMap="Mmap">
+        select m.*,u.ustatename from myuser m,ustate u where u.ustateid=m.ustate and m.ustate!='3'
+        <if test="time1!=null and time1 neq '' and time2!=null and time2 neq ''">
+        and uregdate between #{time1} and #{time2}
+        </if>
+        <if test="uname!=null and uname neq ''">
+            and uname like concat('%',#{uname},'%')
+        </if>
+    </select>
+    <!--    主键-->
+    <resultMap id="Mmap" type="com.great.entity.User">
+        <id property="userid" column="userid"></id>
+        <result property="upwd" column="upwd"></result>
+        <result property="uname" column="uname"></result>
+        <result property="upoint" column="upoint"></result>
+        <result property="usex" column="usex"></result>
+        <result property="ugrate" column="ugrate"></result>
+        <result property="uphone" column="uphone"></result>
+        <result property="ujob" column="ujob"></result>
+        <result property="uemail" column="uemail"></result>
+        <result property="uregdate" column="uregdate"></result>
+        <result property="numdownload" column="numdownload"></result>
+        <result property="numupdate" column="numupdate"></result>
+        <association property="ustateobj" column="ustateid" javaType="com.great.entity.Ustate">
+            <id property="ustateid" column="ustateid"></id>
+            <result property="ustatename" column="ustatename"></result>
+        </association>
+    </resultMap>
+    <!--删除用户-->
+    <update id="delUser" parameterType="com.great.entity.User">
+        UPDATE myuser set ustate='3' where userid=#{userid}
+    </update>
+    <!--禁用用户-->
+    <update id="updateUstate2" parameterType="com.great.entity.User">
+        UPDATE myuser set ustate='2' where userid=#{userid}
+    </update>
+    <!--启用用户-->
+    <update id="updateUstate1" parameterType="com.great.entity.User">
+        UPDATE myuser set ustate='1' where userid=#{userid}
+    </update>
+
+    <!--查询所有文档-->
+    <select id="queryFile" resultMap="Fmap">
+     select f.*,ft.ftname,m.uname from file f,filetype ft,myuser m
+     where f.ftid=ft.ftid and f.uid=m.userid
+     <if test="time1!=null and time1 neq '' and time2!=null and time2 neq ''">
+         and fupdate between #{time1} and #{time2}
+     </if>
+     <if test="uname!=null and uname neq ''">
+         and uname like concat('%',#{uname},'%')
+     </if>
+     <if test="fname!=null and fname neq ''">
+            and f   name like concat('%',#{fname},'%')
+     </if>
+     <if test="ftname!=null and ftname neq ''">
+            and ftname like concat('%',#{ftname},'%')
+     </if>
+    </select>
+    <resultMap id="Fmap" type="com.great.entity.File">
+        <id property="fileid" column="fileid"></id>
+        <result property="fname" column="fname"></result>
+        <result property="fintroduction" column="fintroduction"></result>
+        <result property="fupdate" column="fupdate"></result>
+        <result property="downpoint" column="downpoint"></result>
+        <result property="numdownload" column="numdownload"></result>
+        <association property="filetype" column="ftid" javaType="com.great.entity.Filetype">
+            <id property="ftid" column="ftid"></id>
+            <result property="ftname" column="ftname"></result>
+        </association>
+        <association property="user" column="userid" javaType="com.great.entity.User">
+            <id property="userid" column="userid"></id>
+            <result property="uname" column="uname"></result>
+        </association>
+    </resultMap>
+    <!--查询所有文档类型-->
+    <select id="queryFiletype" resultType="com.great.entity.Filetype">
+        select * from filetype
+    </select>
+
+
+
+<!--    <select id="">-->
+<!--        select *-->
+<!--        from myuser-->
+<!--        where-->
+<!--        <if test="userid !=null">-->
+<!--            userid=#{userid}-->
+<!--        </if>-->
+<!--        <if test="uname !=null">-->
+<!--            <bind name="newuname" value="'%'+uname+'%'">-->
+<!--                uname like #{newuname}-->
+<!--            </bind>-->
+<!--        </if>-->
+<!--    </select>-->
+
+
+
+
+<!--
+
+查询用foreach
+-->
+    <select id="foreach" resultType="com.great.entity.User">
+        select *
+        from myuser
+        <where>
+            userid in
+            <foreach collection="list" open="(" close=")" item="item" separator=",">
+                         #{item}
+            </foreach>
+        </where>
+    </select>
+
+<!--    <select id="hs" resultType="com.great.entity.User">-->
+<!--        select *-->
+<!--        from myuser-->
+<!--        <where>-->
+<!--            userid in-->
+<!--            <foreach collection="map" item="it" separator="," open="(" close=")">-->
+<!--                    #{it}-->
+<!--            </foreach>-->
+<!--        </where>-->
+<!--    </select>-->
+
+    <select id="when" resultType="com.great.entity.User">
+        select 
+        <choose>
+            <when test="ustate ==1">
+                uname,upwd
+            </when>
+            <when test="ustate ==2">
+                uname
+            </when>
+            <otherwise>
+                uname,upwd,usex,ujob
+            </otherwise>
+        </choose>
+        from myuser
+    </select>
+
+
+
+
+
+</mapper>

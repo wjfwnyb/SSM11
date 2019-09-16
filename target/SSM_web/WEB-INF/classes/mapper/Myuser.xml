@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.great.map.Usermap">
+
+    <!--前台登录-->
+    <select id="login" resultType="com.great.entity.User">
+     select * from myuser
+     where userid=#{userid}
+     and upwd=#{upwd} and ustate='1'
+    </select>
+<!--    &lt;!&ndash;注册&ndash;&gt;-->
+<!--    <insert id="adduser" parameterType="com.great.entity.User">-->
+<!--        insert into myuser-->
+<!--        (userid,uname,upwd,usex,ugrate,uphone,ujob,uemail,-->
+<!--        upoint,ustate,uregdate,numdownload,numupdate)-->
+<!--        VALUES (#{userid},#{uname},#{upwd},#{usex},-->
+<!--        #{ugrate},#{uphone},#{ujob},#{uemail},'0','1',#{uregdate},'0','0')-->
+<!--    </insert>-->
+
+<!--    查询登录用户所有文档-->
+<!--    <select id="findfile" resultMap="Umap" parameterType="java.lang.String">-->
+<!--        select f.*,m.uname,ft.ftname from file f,myuser m,filetype ft-->
+<!--        where f.uid=m.userid and ft.ftid=f.fileid and uid=#{userid}-->
+<!--        <if test="filetype!=null and filetype neq ''">-->
+<!--            and ft.ftname like concat('%',#{filetype},'%')-->
+<!--        </if>-->
+<!--        -->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;主键&ndash;&gt;-->
+<!--    <resultMap id="Umap" type="com.great.entity.File">-->
+<!--        <id property="fileid" column="fileid"></id>-->
+<!--        <result property="fname" column="fname"></result>-->
+<!--        <result property="fintroduction" column="fintroduction"></result>-->
+<!--        <result property="fupdate" column="fupdate"></result>-->
+<!--        <result property="downpoint" column="downpoint"></result>-->
+<!--        <result property="numdownload" column="numdownload"></result>-->
+<!--        <association property="filetype" column="ftid" javaType="com.great.entity.Filetype">-->
+<!--            <id property="ftid" column="ftid"></id>-->
+<!--            <result property="ftname" column="ftname"></result>-->
+<!--        </association>-->
+<!--        <association property="user" column="userid" javaType="com.great.entity.User">-->
+<!--            <id property="userid" column="userid"></id>-->
+<!--            <result property="uname" column="uname"></result>-->
+<!--        </association>-->
+<!--    </resultMap>-->
+
+<!--    &lt;!&ndash;启用禁用&ndash;&gt;-->
+<!--    <update id="updateustate">-->
+<!--        UPDATE myuser set ustate=#{ustate} where userid=#{userid}-->
+<!--    </update>-->
+<!--    &lt;!&ndash;一对多  比如一个状态对应多个用户&ndash;&gt;-->
+<!--    <resultMap id="ustateMap" type="com.great.entity.Ustate">-->
+<!--        <id property="ustateid" column="ustateid"/>-->
+<!--        <result property="ustatename" column="ustatename"/>-->
+<!--        <collection property="user" ofType="com.great.entity.User" column="userid" >-->
+<!--            <id property="userid" column="userid"></id>-->
+<!--            <result property="uname" column="uname"></result>-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+<!--    <select id="find" resultMap="ustateMap">-->
+<!--        select u.ustatename,m.uname from ustate u,myuser m where u.ustateid=m.ustate and u.ustateid=#{ustateid}-->
+<!--    </select>-->
+
+
+<!--<insert id="" parameterType="" useGeneratedKeys="" keyProperty="">-->
+
+<!--</insert>-->
+
+
+<!--    <select id="">-->
+<!--        <where>-->
+<!--        <if test="uname!=null and uname neq '' ">-->
+<!--            and uname=#{uname}-->
+<!--        </if>-->
+<!--        <if test="upwd!=null">-->
+<!--            and upwd=#{upwd}-->
+<!--        </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--    <select id="" parameterType="" resultType="">-->
+<!--        select * from myuser where userid in-->
+<!--        <foreach collection="" item="" open="">-->
+
+<!--        </foreach>-->
+<!--    </select>-->
+
+</mapper>
+	
